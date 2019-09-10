@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_dark"
+    tools:context=".ResultFragment">
+
+    <Button
+        android:id="@+id/run"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/run_bg_btn"
+        android:fontFamily="@font/orbitron_black"
+        android:gravity="center"
+        android:text="@string/run"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:visibility="visible"
+        tools:ignore="PxUsage" />
+
+    <pl.pawelkleczkowski.customgauge.CustomGauge
+        android:id="@+id/gauge"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        app:gaugeDividerColor="#00B8D4"
+        app:gaugeEndValue="0"
+        app:gaugePointEndColor="#00C853"
+        app:gaugePointStartColor="#6200EA"
+        app:gaugeStartValue="2000"
+        app:gaugeStrokeColor="@color/grey_dark"
+        app:gaugeStrokeWidth="2dp" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        app:cardBackgroundColor="#011027"
+        app:cardCornerRadius="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <GridLayout
+                android:id="@+id/grid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:columnCount="2"
+                android:padding="5dp"
+                android:rowCount="3">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/download_format"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_action_down"
+                        android:drawablePadding="5dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:gravity="center"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="5dp"
+                        android:text="DOWNLOAD Mbps"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_format_size"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/download"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/unica_one_egular"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="__"
+                        android:textColor="@color/white"
+                        android:textSize="40sp"
+                        tools:ignore="HardcodedText" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/upload_format"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_action_up"
+                        android:drawablePadding="5dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:gravity="center"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="5dp"
+                        android:text="UPLOAD Mbps"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_format_size"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/uplaod"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/unica_one_egular"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="__"
+                        android:textColor="@color/white"
+                        android:textSize="40sp"
+                        tools:ignore="HardcodedText" />
+
+                </LinearLayout>
+            </GridLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/card"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/total_format"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_action_down"
+                    android:drawableEnd="@drawable/ic_action_up"
+                    android:drawablePadding="5dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="5dp"
+                    android:text="TOTAL Mbps"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_format_size"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/total_speed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:fontFamily="@font/unica_one_egular"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="__"
+                    android:textColor="@color/white"
+                    android:textSize="40sp"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/prov"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/run"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/provider"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/orbitron_medium"
+            android:gravity="center"
+            android:text="Loading.."
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/network"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/white_circle"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="center"
+            android:text="U"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_id" />
+
+</RelativeLayout>

@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_dark"
+    tools:context=".MainFragment">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="@font/roboto_light"
+        android:textColor="@color/white"
+        tools:ignore="HardcodedText" />
+
+    <GridLayout
+        android:id="@+id/grid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:columnCount="2"
+        android:padding="5dp"
+        android:rowCount="1">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/download_format"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:drawableStart="@drawable/ic_action_down"
+                android:drawablePadding="5dp"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:paddingStart="0dp"
+                android:paddingEnd="5dp"
+                android:text="@string/download_mbps"
+                android:textColor="@color/text_grey"
+                android:textSize="@dimen/text_format_size" />
+
+            <TextView
+                android:id="@+id/download"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/unica_one_egular"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="__"
+                android:textColor="@color/text_grey"
+                android:textSize="@dimen/progress_text_size"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/upload_format"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:drawableStart="@drawable/ic_action_up"
+                android:drawablePadding="5dp"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:paddingStart="0dp"
+                android:paddingEnd="5dp"
+                android:text="@string/upload_mbps"
+                android:textColor="@color/text_grey"
+                android:textSize="@dimen/text_format_size" />
+
+            <TextView
+                android:id="@+id/uplaod"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/unica_one_egular"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="__"
+                android:textColor="@color/text_grey"
+                android:textSize="@dimen/progress_text_size"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+    </GridLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/adView"
+        android:layout_below="@id/grid"
+        android:layout_marginBottom="5dp">
+
+        <LinearLayout
+            android:id="@+id/prov"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/gauge"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/provider"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center"
+                android:text="Unknown"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/network"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/white_circle"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="center"
+                android:text="U"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/prov"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            tools:ignore="UseCompoundDrawables">
+
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5dp"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center"
+                android:text="Loading..."
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:src="@drawable/ic_action_location"
+                tools:ignore="ContentDescription,HardcodedText" />
+        </LinearLayout>
+
+        <com.github.anastr.speedviewlib.PointerSpeedometer
+            android:id="@+id/gauge"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            app:sv_backgroundCircleColor="@color/grey_dark"
+            app:sv_indicator="NormalSmallIndicator"
+            app:sv_indicatorColor="#00B8D4"
+            app:sv_indicatorWidth="4dp"
+            app:sv_lowSpeedColor="@color/sky_blue"
+            app:sv_maxSpeed="50"
+            app:sv_speedTextColor="@color/grey_dark"
+            app:sv_speedometerColor="#00B8D4"
+            app:sv_speedometerWidth="20dp"
+            app:sv_tickNumber="10"
+            app:sv_tickPadding="40dp"
+            app:sv_tickRotation="false"
+            app:sv_unitSpeedInterval="5sp"
+            app:sv_unitTextColor="@color/grey_dark"
+            app:sv_withPointer="false"
+            app:sv_withTremble="false" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:id="@+id/total_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/gauge"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="-50dp"
+            android:fontFamily="@font/unica_one_egular"
+            android:text="0.0"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            tools:ignore="HardcodedText" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/total_speed"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/icon_format"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_action_down"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/format"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="center"
+                android:text="Mbps"
+                android:textColor="#29646D"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_id" />
+
+</RelativeLayout>

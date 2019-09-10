@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "272816283833",
+    "firebase_url": "https://ztest-3d32d.firebaseio.com",
+    "project_id": "ztest-3d32d",
+    "storage_bucket": "ztest-3d32d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:272816283833:android:3bc8d4899b4c2693a57b68",
+        "android_client_info": {
+          "package_name": "com.nightcoders.sreekanth.ztest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "272816283833-ia0vbi0nrdat9b59p6fqn5n5vricsmgm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nightcoders.sreekanth.ztest",
+            "certificate_hash": "00a7f0d6f12301da64b2266bf0a5323d5989971f"
+          }
+        },
+        {
+          "client_id": "272816283833-slncjbj3epn1ln7aut33p2arlou0ott2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHzM1VZcFPwCdYI3mUaWFy7DrOhC4eVQ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "272816283833-slncjbj3epn1ln7aut33p2arlou0ott2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

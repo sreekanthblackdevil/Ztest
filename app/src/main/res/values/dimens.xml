@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="progress_text_size">30sp</dimen>
+    <dimen name="text_format_size">13sp</dimen>
+</resources>
