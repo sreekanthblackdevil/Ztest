@@ -38,15 +38,6 @@ public class MainFragment extends Fragment implements DataChangeListener, Locati
     private ProgressBar progressBar;
     private TextView location;
 
-    //private InterstitialAd mInterstitialAd;
-    // private TextView loc;
-
-//    MainFragment(Button button, Context context) {
-//        button.setEnabled(false);
-//        btn = button;
-//        this.context = context;
-//    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
