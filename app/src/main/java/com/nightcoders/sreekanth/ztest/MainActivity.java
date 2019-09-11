@@ -2,6 +2,7 @@ package com.nightcoders.sreekanth.ztest;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -23,8 +24,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -100,38 +99,17 @@ public class MainActivity extends FragmentActivity implements StartButtonClickLi
 
         startFragment = new StartFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        assert fragmentManager != null;
         fragmentManager.beginTransaction()
                 .add(R.id.frame, startFragment, START_FRAGMENT_TAG)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
         mlocationListener = startFragment;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
-        } else {
-            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            assert locationManager != null;
-            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            try {
-                assert location != null;
-                currentCity = getCityName(location.getLatitude(), location.getLongitude());
-                if (!TextUtils.isEmpty(currentCity))
-                    mlocationListener.OnLocationChanged(currentCity);
-                else mlocationListener.OnLocationChanged("Not Found");
-                Log.d("Latitude", String.valueOf(location.getLatitude()));
-                Log.d("Longitude", String.valueOf(location.getLongitude()));
-            } catch (Exception e) {
-                e.printStackTrace();
-                mlocationListener.OnLocationChanged("Not Found");
-            }
-        }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+    public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions, @NotNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == 100) {
@@ -146,6 +124,12 @@ public class MainActivity extends FragmentActivity implements StartButtonClickLi
             currentCity = getCityName(location.getLatitude(), location.getLongitude());
             Log.d("Latitude", String.valueOf(location.getLatitude()));
             Log.d("Longitude", String.valueOf(location.getLongitude()));
+            if (TextUtils.isEmpty(currentCity)) {
+                Log.d("Location", "Not Found");
+                mlocationListener.OnLocationChanged("Not found");
+            } else {
+                mlocationListener.OnLocationChanged(currentCity);
+            }
             Toast.makeText(this, currentCity, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, getString(R.string.permission_not_granted), Toast.LENGTH_SHORT).show();
@@ -169,8 +153,7 @@ public class MainActivity extends FragmentActivity implements StartButtonClickLi
 
                         final double d = bd.doubleValue();
                         download = d;
-                        dataChangeListener.OnDownloadChanged(getFormat(d), convertMB(d),
-                                getResources().getColor(R.color.violet), getFormatString(d));
+                        dataChangeListener.OnDownloadChanged(getFormat(d), convertMB(d), getFormatString(d));
                     }
 
                     @SuppressLint("SetTextI18n")
@@ -185,12 +168,10 @@ public class MainActivity extends FragmentActivity implements StartButtonClickLi
                         Log.d("SHOW_SPEED", "" + formatFileSize(d));
                         upload = d;
 
-                        dataChangeListener.OnUploadChange(getFormat(d), convertMB(d),
-                                getResources().getColor(R.color.sky_blue), getFormatString(d));
+                        dataChangeListener.OnUploadChange(getFormat(d), convertMB(d), getFormatString(d));
                         //start = false;
                     }
 
-                    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
                     @Override
                     public void onTotalProgress(int count, @NotNull final ProgressionModel progressModel) {
                         java.math.BigDecimal downloadDecimal = progressModel.getDownloadSpeed();
@@ -198,17 +179,11 @@ public class MainActivity extends FragmentActivity implements StartButtonClickLi
 
                         java.math.BigDecimal uploadDecimal = progressModel.getUploadSpeed();
                         final double uploadFinal = uploadDecimal.doubleValue();
-                        final double totalSpeedCount = (downloadFinal + uploadFinal) / 2;
-                        grandTotal = totalSpeedCount;
+                        grandTotal = (downloadFinal + uploadFinal) / 2;
 
-                        float finalDownload = (downloadDecimal.longValue() / 1000000);
-                        float finalUpload = (uploadDecimal.longValue() / 1000000);
-                        final float totalassumtionSpeed = (finalDownload + finalUpload) / 2;
-
-                        Log.d("COMPLETE", "complete");
-                        dataChangeListener.OnTotalSpeedChanged(totalassumtionSpeed, getFormat(totalassumtionSpeed),
-                                getResources().getColor(R.color.white), getFormatString(totalSpeedCount));
-
+//                        float finalDownload = (downloadDecimal.longValue() / 1000000);
+//                        float finalUpload = (uploadDecimal.longValue() / 1000000);
+//                        final float totalassumtionSpeed = (finalDownload + finalUpload) / 2;
                     }
 
                 });
@@ -412,21 +387,23 @@ public class MainActivity extends FragmentActivity implements StartButtonClickLi
             builder = null;
             thread.interrupt();
         }
+        Log.d("Detach", MAIN_FRAGMENT_TAG);
     }
 
     @Override
     public void OnAttachMainFragment() {
-
+        getLocation();
+        Log.d("Attach", MAIN_FRAGMENT_TAG);
     }
 
     @Override
     public void OnResultFragmentAttach() {
-
+        Log.d("Attach", RESULT_FRAGMENT_TAG);
     }
 
     @Override
     public void OnResultFragmentDetach() {
-
+        Log.d("Detach", RESULT_FRAGMENT_TAG);
     }
 
     @Override
@@ -468,15 +445,13 @@ public class MainActivity extends FragmentActivity implements StartButtonClickLi
                                     }
                                 });
 
-                                //Toast.makeText(MainActivity.this, "Process Complete", Toast.LENGTH_SHORT).show();
-
+                                Log.d("Process", "Complete");
                                 String[] results = {getFormat(download), getFormat(upload),
                                         getFormat(grandTotal)};
                                 String[] formats = {getFormatString(download), getFormatString(upload), getFormatString(grandTotal)};
 
                                 resultFragment = new ResultFragment(results, formats);
                                 FragmentManager fragmentManager = getSupportFragmentManager();
-                                assert fragmentManager != null;
                                 fragmentManager.beginTransaction()
                                         .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
                                         .addToBackStack("START_FRAGMENT")
@@ -484,10 +459,7 @@ public class MainActivity extends FragmentActivity implements StartButtonClickLi
                                         .attach(resultFragment)
                                         .commit();
                                 timer.cancel();
-                                FragmentManager fr = getSupportFragmentManager();
-                                fr.beginTransaction().detach(mainFragment).detach(startFragment).commit();
-                                startFragment = new StartFragment();
-                                mainFragment = new MainFragment();
+                                closeMainFragment();
                             }
                         });
                         break;
@@ -543,7 +515,6 @@ public class MainActivity extends FragmentActivity implements StartButtonClickLi
     private void openMainFragment() {
         mainFragment = new MainFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        assert fragmentManager != null;
         fragmentManager.beginTransaction()
                 .replace(R.id.frame, mainFragment, MAIN_FRAGMENT_TAG)
                 .setCustomAnimations(0, 0, R.anim.fade_in, R.anim.fade_out)
@@ -557,6 +528,29 @@ public class MainActivity extends FragmentActivity implements StartButtonClickLi
     private void closeMainFragment() {
         FragmentManager fr = getSupportFragmentManager();
         fr.beginTransaction().detach(mainFragment).commit();
+    }
+
+    private void getLocation() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
+        } else {
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            assert locationManager != null;
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            try {
+                assert location != null;
+                currentCity = getCityName(location.getLatitude(), location.getLongitude());
+                if (!TextUtils.isEmpty(currentCity))
+                    mlocationListener.OnLocationChanged(currentCity);
+                else mlocationListener.OnLocationChanged("Not Found");
+                Log.d("Latitude", String.valueOf(location.getLatitude()));
+                Log.d("Longitude", String.valueOf(location.getLongitude()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                mlocationListener.OnLocationChanged("Not Found");
+            }
+        }
     }
 
     class myPhoneStateListener extends PhoneStateListener {

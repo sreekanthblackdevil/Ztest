@@ -24,6 +24,8 @@ import com.nightcoders.sreekanth.ztest.Listeners.DataChangeListener;
 import com.nightcoders.sreekanth.ztest.Listeners.LocationListener;
 import com.nightcoders.sreekanth.ztest.Supports.NetworkSupport;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 
@@ -42,7 +44,6 @@ public class MainFragment extends Fragment implements DataChangeListener, Locati
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-
         gauge = view.findViewById(R.id.gauge);
         downloadSpeed = view.findViewById(R.id.download);
         uploadSpeed = view.findViewById(R.id.uplaod);
@@ -56,18 +57,13 @@ public class MainFragment extends Fragment implements DataChangeListener, Locati
         progressBar = view.findViewById(R.id.progress);
         location = view.findViewById(R.id.location);
         progressBar.setVisibility(View.VISIBLE);
-        //loc = view.findViewById(R.id.location);
-        ///status = view.findViewById(R.id.status);
         network = view.findViewById(R.id.network);
-        //console = view.findViewById(R.id.console);
         icon = view.findViewById(R.id.icon_format);
-        //mInterstitialAd = new InterstitialAd(context);
         String[] data = NetworkSupport.getNetworkProvider(Objects.requireNonNull(getActivity()).getApplicationContext());
         String prov = data[1];
         String net = data[0];
         provider.setText(prov);
         network.setText(net);
-
 
         gauge.speedTo(0);
 
@@ -88,7 +84,7 @@ public class MainFragment extends Fragment implements DataChangeListener, Locati
     }
 
     @Override
-    public void onAttachFragment(Fragment childFragment) {
+    public void onAttachFragment(@NotNull Fragment childFragment) {
         super.onAttachFragment(childFragment);
         Activity activity = (Activity) Objects.requireNonNull(getActivity()).getApplicationContext();
         changeFragmentStateListener = (ChangeFragmentStateListener) activity;
@@ -116,7 +112,7 @@ public class MainFragment extends Fragment implements DataChangeListener, Locati
 
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         Activity activity = (Activity) context;
         changeFragmentStateListener = (ChangeFragmentStateListener) activity;
@@ -124,13 +120,13 @@ public class MainFragment extends Fragment implements DataChangeListener, Locati
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void OnDownloadChanged(String speed, float total, int color, String formats) {
+    public void OnDownloadChanged(String speed, float total, String formats) {
         downloadSpeed.setText(speed);
         progressBar.setVisibility(View.GONE);
         totalSpeed.setText(speed);
         format.setText(formats);
         gauge.speedTo(total);
-        changeGaugeAccent(color);
+        changeGaugeAccent(getResources().getColor(R.color.violet));
         downloadFormat.setText("DOWNLOAD " + formats);
 //        downloadFormat.setTextColor(getResources().getColor(R.color.white));
 //        downloadSpeed.setTextColor(getResources().getColor(R.color.white));
@@ -153,11 +149,11 @@ public class MainFragment extends Fragment implements DataChangeListener, Locati
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void OnUploadChange(String speed, float total, int color, String formats) {
+    public void OnUploadChange(String speed, float total, String formats) {
         uploadSpeed.setText(speed);
         totalSpeed.setText(speed);
         format.setText(formats);
-        changeGaugeAccent(color);
+        changeGaugeAccent(getResources().getColor(R.color.sky_blue));
         progressBar.setVisibility(View.GONE);
         gauge.speedTo(total);
         uploadFormat.setText("UPLOAD " + formats);
@@ -178,23 +174,9 @@ public class MainFragment extends Fragment implements DataChangeListener, Locati
     }
 
     @Override
-    public void OnTotalSpeedChanged(float speed, String total, int color, String formats) {
-        //gauge.speedTo(speed);
-        //totalSpeed.setText(total);
-        //format.setText(formats);
-        //changeGaugeAccent(color);
-    }
-
-    @Override
-    public void OnChangeProvider(String prov, String conn) {
-        provider.setText(prov);
-        network.setText(conn);
-    }
-
-    @Override
-    public void OnClearGuage(float f, String speed) {
-        gauge.speedTo(f);
-        totalSpeed.setText(speed);
+    public void OnClearGuage() {
+        gauge.speedTo(0f);
+        totalSpeed.setText("0.0");
     }
 
     private void changeGaugeAccent(int color) {
