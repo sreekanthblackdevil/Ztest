@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,6 +24,8 @@ import com.nightcoders.sreekanth.ztest.Listeners.LocationListener;
 import com.nightcoders.sreekanth.ztest.Listeners.StartButtonClickListener;
 import com.nightcoders.sreekanth.ztest.Supports.NetworkSupport;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 import pl.pawelkleczkowski.customgauge.CustomGauge;
@@ -32,7 +36,7 @@ public class StartFragment extends Fragment implements ChangeFragmentStateListen
     private CustomGauge gauge;
     private StartButtonClickListener clickListener;
     private RelativeLayout startLay;
-    private TextView location;
+    //private TextView location;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,7 +50,7 @@ public class StartFragment extends Fragment implements ChangeFragmentStateListen
         gauge = view.findViewById(R.id.gauge);
         TextView network = view.findViewById(R.id.network);
         TextView provider = view.findViewById(R.id.provider);
-        location = view.findViewById(R.id.loc);
+        //location = view.findViewById(R.id.loc);
         gauge.setVisibility(View.GONE);
         // animation();
         String[] data = NetworkSupport.getNetworkProvider(Objects.requireNonNull(getActivity()).getApplicationContext());
@@ -54,6 +58,10 @@ public class StartFragment extends Fragment implements ChangeFragmentStateListen
         String net = data[0];
         provider.setText(prov);
         network.setText(net);
+
+        Animation shake = AnimationUtils.loadAnimation(getContext(), R.anim.btn_anim);
+        shake.setRepeatCount(Animation.REVERSE);
+        run.setAnimation(shake);
         return view;
     }
 
@@ -87,7 +95,7 @@ public class StartFragment extends Fragment implements ChangeFragmentStateListen
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
 
         Activity activity = (Activity) context;

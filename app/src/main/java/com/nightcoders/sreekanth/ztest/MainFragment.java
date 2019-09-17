@@ -6,7 +6,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,10 +30,11 @@ import java.util.Objects;
 
 public class MainFragment extends Fragment implements DataChangeListener, LocationListener {
 
-    //private Button btn;
     private PointerSpeedometer gauge;
     private TextView downloadSpeed, uploadSpeed, totalSpeed;
-    private TextView provider, network, format, downloadFormat, uploadFormat;
+    private TextView format;
+    private TextView downloadFormat;
+    private TextView uploadFormat;
     private ChangeFragmentStateListener changeFragmentStateListener;
     private ImageView icon;
     private ProgressBar progressBar;
@@ -49,7 +49,7 @@ public class MainFragment extends Fragment implements DataChangeListener, Locati
         uploadSpeed = view.findViewById(R.id.uplaod);
         totalSpeed = view.findViewById(R.id.total_speed);
         gauge = view.findViewById(R.id.gauge);
-        provider = view.findViewById(R.id.provider);
+        TextView provider = view.findViewById(R.id.provider);
         downloadFormat = view.findViewById(R.id.download_format);
         AdView adView = view.findViewById(R.id.adView);
         uploadFormat = view.findViewById(R.id.upload_format);
@@ -57,9 +57,10 @@ public class MainFragment extends Fragment implements DataChangeListener, Locati
         progressBar = view.findViewById(R.id.progress);
         location = view.findViewById(R.id.location);
         progressBar.setVisibility(View.VISIBLE);
-        network = view.findViewById(R.id.network);
+        TextView network = view.findViewById(R.id.network);
         icon = view.findViewById(R.id.icon_format);
-        String[] data = NetworkSupport.getNetworkProvider(Objects.requireNonNull(getActivity()).getApplicationContext());
+        String[] data = NetworkSupport.getNetworkProvider(Objects.requireNonNull(getActivity())
+                .getApplicationContext());
         String prov = data[1];
         String net = data[0];
         provider.setText(prov);
@@ -67,17 +68,6 @@ public class MainFragment extends Fragment implements DataChangeListener, Locati
 
         gauge.speedTo(0);
 
-        new CountDownTimer(500, 100) {
-            @Override
-            public void onTick(long l) {
-
-            }
-
-            @Override
-            public void onFinish() {
-                gauge.speedTo(0);
-            }
-        }.start();
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
         return view;
@@ -89,7 +79,6 @@ public class MainFragment extends Fragment implements DataChangeListener, Locati
         Activity activity = (Activity) Objects.requireNonNull(getActivity()).getApplicationContext();
         changeFragmentStateListener = (ChangeFragmentStateListener) activity;
         changeFragmentStateListener.OnAttachMainFragment();
-        ///Toast.makeText(activity, "attach Main", Toast.LENGTH_SHORT).show();
     }
 
     @SuppressLint("SetTextI18n")
@@ -99,7 +88,6 @@ public class MainFragment extends Fragment implements DataChangeListener, Locati
         if (isRemoving()) {
             changeFragmentStateListener.OnDetachMainFragment();
         }
-        //changeFragmentStateListener.OnDetachMainFragment();
     }
 
     @Override
@@ -128,9 +116,8 @@ public class MainFragment extends Fragment implements DataChangeListener, Locati
         gauge.speedTo(total);
         changeGaugeAccent(getResources().getColor(R.color.violet));
         downloadFormat.setText("DOWNLOAD " + formats);
-//        downloadFormat.setTextColor(getResources().getColor(R.color.white));
-//        downloadSpeed.setTextColor(getResources().getColor(R.color.white));
 
+        //Animation
         Integer colorFrom = getResources().getColor(R.color.text_grey);
         Integer colorTo = getResources().getColor(R.color.white);
         ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
@@ -173,12 +160,6 @@ public class MainFragment extends Fragment implements DataChangeListener, Locati
         icon.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_up));
     }
 
-    @Override
-    public void OnClearGuage() {
-        gauge.speedTo(0f);
-        totalSpeed.setText("0.0");
-    }
-
     private void changeGaugeAccent(int color) {
         gauge.setSpeedometerColor(color);
         gauge.setIndicatorColor(color);
@@ -186,6 +167,6 @@ public class MainFragment extends Fragment implements DataChangeListener, Locati
 
     @Override
     public void OnLocationChanged(String cityName) {
-        location.setText(cityName.toUpperCase());
+        location.setText(cityName);
     }
 }

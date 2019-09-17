@@ -66,14 +66,12 @@ public class MainActivity extends FragmentActivity implements StartButtonClickLi
     private Thread thread;
     private MainFragment mainFragment;
     private ResultFragment resultFragment;
-    private StartFragment startFragment;
     private InternetSpeedBuilder builder;
     private double upload = 0;
     private double download = 0;
     private double grandTotal = 0;
     private InterstitialAd mInterstitialAd;
     private CountDownTimer timer;
-    private String currentCity;
     private LocationListener mlocationListener;
 
 
@@ -97,7 +95,7 @@ public class MainActivity extends FragmentActivity implements StartButtonClickLi
         assert mTelManager != null;
         mTelManager.listen(phoneStateListener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
 
-        startFragment = new StartFragment();
+        StartFragment startFragment = new StartFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .add(R.id.frame, startFragment, START_FRAGMENT_TAG)
@@ -113,24 +111,7 @@ public class MainActivity extends FragmentActivity implements StartButtonClickLi
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == 100) {
-            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-            assert locationManager != null;
-            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            assert location != null;
-            currentCity = getCityName(location.getLatitude(), location.getLongitude());
-            Log.d("Latitude", String.valueOf(location.getLatitude()));
-            Log.d("Longitude", String.valueOf(location.getLongitude()));
-            if (TextUtils.isEmpty(currentCity)) {
-                Log.d("Location", "Not Found");
-                mlocationListener.OnLocationChanged("Not found");
-            } else {
-                mlocationListener.OnLocationChanged(currentCity);
-            }
-            Toast.makeText(this, currentCity, Toast.LENGTH_SHORT).show();
+            getLocation();
         } else {
             Toast.makeText(this, getString(R.string.permission_not_granted), Toast.LENGTH_SHORT).show();
         }
@@ -180,10 +161,6 @@ public class MainActivity extends FragmentActivity implements StartButtonClickLi
                         java.math.BigDecimal uploadDecimal = progressModel.getUploadSpeed();
                         final double uploadFinal = uploadDecimal.doubleValue();
                         grandTotal = (downloadFinal + uploadFinal) / 2;
-
-//                        float finalDownload = (downloadDecimal.longValue() / 1000000);
-//                        float finalUpload = (uploadDecimal.longValue() / 1000000);
-//                        final float totalassumtionSpeed = (finalDownload + finalUpload) / 2;
                     }
 
                 });
@@ -540,7 +517,7 @@ public class MainActivity extends FragmentActivity implements StartButtonClickLi
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             try {
                 assert location != null;
-                currentCity = getCityName(location.getLatitude(), location.getLongitude());
+                String currentCity = getCityName(location.getLatitude(), location.getLongitude());
                 if (!TextUtils.isEmpty(currentCity))
                     mlocationListener.OnLocationChanged(currentCity);
                 else mlocationListener.OnLocationChanged("Not Found");

@@ -8,6 +8,8 @@ import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -77,6 +79,9 @@ public class ResultFragment extends Fragment {
         String net = data[0];
         provider.setText(prov);
         network.setText(net);
+        Animation shake = AnimationUtils.loadAnimation(getContext(), R.anim.btn_anim);
+        shake.setRepeatCount(Animation.REVERSE);
+        run.setAnimation(shake);
         return view;
     }
 
