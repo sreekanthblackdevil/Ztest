@@ -149,33 +149,38 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_below="@id/prov"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:visibility="visible"
             tools:ignore="UseCompoundDrawables">
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/roboto_light"
+                android:text="Location"
+                android:textColor="#2196F3"
+                android:textSize="12sp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
                 android:id="@+id/location"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="5dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:fontFamily="@font/roboto_regular"
                 android:gravity="center"
-                android:text="Loading..."
+                android:maxLength="20"
+                android:text="Loading"
                 android:textColor="@color/white"
                 android:textSize="14sp"
                 tools:ignore="HardcodedText" />
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:src="@drawable/ic_action_location"
-                tools:ignore="ContentDescription,HardcodedText" />
+
         </LinearLayout>
 
         <com.github.anastr.speedviewlib.PointerSpeedometer
@@ -228,7 +233,8 @@
             android:layout_below="@id/total_speed"
             android:layout_centerHorizontal="true"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
 
             <ImageView
                 android:id="@+id/icon_format"

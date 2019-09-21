@@ -2,9 +2,9 @@
     <string name="app_name">Z Test</string>
 
     <!-- Test Ads -->
-    <string name="app_id">ca-app-pub-3940256099942544~3347511713</string>
-    <string name="banner_id">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="interstitial_id">ca-app-pub-3940256099942544/1033173712</string>
+    <!--    <string name="app_id">ca-app-pub-3940256099942544~3347511713</string>-->
+    <!--    <string name="banner_id">ca-app-pub-3940256099942544/6300978111</string>-->
+    <!--    <string name="interstitial_id">ca-app-pub-3940256099942544/1033173712</string>-->
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="run">Run</string>
@@ -13,7 +13,7 @@
     <string name="permission_not_granted">Permission not granted</string>
 
     <!--Genuine Ads-->
-    <!--    <string name="app_id">ca-app-pub-5225299964519935~1292643053</string>-->
-    <!--    <string name="banner_id">ca-app-pub-5225299964519935/5412346300</string>-->
-    <!--    <string name="interstitial_id">ca-app-pub-5225299964519935/2115905604</string>-->
+    <string name="app_id">ca-app-pub-5225299964519935~1292643053</string>
+    <string name="banner_id">ca-app-pub-5225299964519935/5412346300</string>
+    <string name="interstitial_id">ca-app-pub-5225299964519935/2115905604</string>
 </resources>

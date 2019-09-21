@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,13 +29,13 @@ import java.util.Objects;
 
 import pl.pawelkleczkowski.customgauge.CustomGauge;
 
+import static com.nightcoders.sreekanth.ztest.Literals.Core.START_FRAGMENT_TAG;
+
 public class StartFragment extends Fragment implements ChangeFragmentStateListener, LocationListener {
 
     private Button run;
     private CustomGauge gauge;
     private StartButtonClickListener clickListener;
-    private RelativeLayout startLay;
-    //private TextView location;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,7 +43,6 @@ public class StartFragment extends Fragment implements ChangeFragmentStateListen
         View view = inflater.inflate(R.layout.fragment_start, container, false);
         // Inflate the layout for this fragment
         run = view.findViewById(R.id.run);
-        startLay = view.findViewById(R.id.start_container);
         Log.d("Starter", "Run");
         run.setEnabled(true);
         gauge = view.findViewById(R.id.gauge);
@@ -52,7 +50,6 @@ public class StartFragment extends Fragment implements ChangeFragmentStateListen
         TextView provider = view.findViewById(R.id.provider);
         //location = view.findViewById(R.id.loc);
         gauge.setVisibility(View.GONE);
-        // animation();
         String[] data = NetworkSupport.getNetworkProvider(Objects.requireNonNull(getActivity()).getApplicationContext());
         String prov = data[1];
         String net = data[0];
@@ -100,6 +97,7 @@ public class StartFragment extends Fragment implements ChangeFragmentStateListen
 
         Activity activity = (Activity) context;
         clickListener = (StartButtonClickListener) activity;
+        Log.d("Attach", START_FRAGMENT_TAG);
     }
 
     @Override
@@ -134,14 +132,12 @@ public class StartFragment extends Fragment implements ChangeFragmentStateListen
     @SuppressLint("SetTextI18n")
     @Override
     public void OnDetachMainFragment() {
-        startLay.setVisibility(View.VISIBLE);
         run.setEnabled(true);
         run.setText("RUN");
     }
 
     @Override
     public void OnAttachMainFragment() {
-        startLay.setVisibility(View.GONE);
         run.setEnabled(false);
         Toast.makeText(getContext(), "Attach main", Toast.LENGTH_SHORT).show();
     }

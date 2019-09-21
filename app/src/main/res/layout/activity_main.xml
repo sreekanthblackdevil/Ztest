@@ -27,6 +27,7 @@
     <fragment
         android:id="@+id/frame"
         class="com.nightcoders.sreekanth.ztest.StartFragment"
+        android:tag="FRAGMENT_START"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/head" />

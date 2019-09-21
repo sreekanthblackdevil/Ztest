@@ -8,8 +8,6 @@ import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -21,6 +19,8 @@ import com.nightcoders.sreekanth.ztest.Listeners.ChangeFragmentStateListener;
 import com.nightcoders.sreekanth.ztest.Listeners.StartButtonClickListener;
 import com.nightcoders.sreekanth.ztest.Supports.NetworkSupport;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 import pl.pawelkleczkowski.customgauge.CustomGauge;
@@ -29,7 +29,7 @@ import pl.pawelkleczkowski.customgauge.CustomGauge;
 public class ResultFragment extends Fragment {
 
     private String total, downloadSpeed, uploadSpeed;
-    private String downloaFormat, uploadFormat, totalFormatString;
+    private String downloadFormat, uploadFormat, totalFormatString;
     private ChangeFragmentStateListener changeFragmentStateListener;
     private CustomGauge gauge;
     private Button run;
@@ -39,7 +39,7 @@ public class ResultFragment extends Fragment {
         downloadSpeed = result[0];
         uploadSpeed = result[1];
         total = result[2];
-        downloaFormat = formats[0];
+        downloadFormat = formats[0];
         uploadFormat = formats[1];
         totalFormatString = formats[2];
     }
@@ -63,7 +63,7 @@ public class ResultFragment extends Fragment {
         totalSpeed.setText(total);
         download.setText(downloadSpeed);
         upload.setText(uploadSpeed);
-        downloadFormatView.setText("DOWNLOAD " + downloaFormat);
+        downloadFormatView.setText("DOWNLOAD " + downloadFormat);
         uploadFormatView.setText("UPLOAD " + uploadFormat);
         gauge.setVisibility(View.GONE);
         run.setOnClickListener(new View.OnClickListener() {
@@ -79,20 +79,16 @@ public class ResultFragment extends Fragment {
         String net = data[0];
         provider.setText(prov);
         network.setText(net);
-        Animation shake = AnimationUtils.loadAnimation(getContext(), R.anim.btn_anim);
-        shake.setRepeatCount(Animation.REVERSE);
-        run.setAnimation(shake);
         return view;
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         Activity activity = (Activity) context;
         changeFragmentStateListener = (ChangeFragmentStateListener) activity;
         changeFragmentStateListener.OnResultFragmentAttach();
         clickListener = (StartButtonClickListener) activity;
-
     }
 
     @Override

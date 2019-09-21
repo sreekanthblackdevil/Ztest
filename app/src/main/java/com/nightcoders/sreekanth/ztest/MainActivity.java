@@ -15,9 +15,6 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.telephony.PhoneStateListener;
-import android.telephony.SignalStrength;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -72,8 +69,8 @@ public class MainActivity extends FragmentActivity implements StartButtonClickLi
     private double grandTotal = 0;
     private InterstitialAd mInterstitialAd;
     private CountDownTimer timer;
-    private LocationListener mlocationListener;
-
+    StartFragment startFragment;
+    private LocationListener mlocationListener = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,16 +87,19 @@ public class MainActivity extends FragmentActivity implements StartButtonClickLi
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_id));
 
-        myPhoneStateListener phoneStateListener = new myPhoneStateListener();
-        TelephonyManager mTelManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        assert mTelManager != null;
-        mTelManager.listen(phoneStateListener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
+//        myPhoneStateListener phoneStateListener = new myPhoneStateListener();
+//        TelephonyManager mTelManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+//        assert mTelManager != null;
+//        mTelManager.listen(phoneStateListener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
 
-        StartFragment startFragment = new StartFragment();
+        requestPermissions();
+
+        startFragment = new StartFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .add(R.id.frame, startFragment, START_FRAGMENT_TAG)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .attach(startFragment)
                 .commit();
         mlocationListener = startFragment;
     }
@@ -111,7 +111,8 @@ public class MainActivity extends FragmentActivity implements StartButtonClickLi
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == 100) {
-            getLocation();
+            if (mlocationListener != null)
+                getLocation();
         } else {
             Toast.makeText(this, getString(R.string.permission_not_granted), Toast.LENGTH_SHORT).show();
         }
@@ -281,13 +282,9 @@ public class MainActivity extends FragmentActivity implements StartButtonClickLi
                         if (!start && !thread.isAlive()) {
                             Toast.makeText(MainActivity.this, "Connection Timeout", Toast.LENGTH_SHORT).show();
                             closeMainFragment();
-                            thread.interrupt();
-                            if (timer != null)
-                                timer.cancel();
-                            //thread.interrupt();
                         } else {
                             checkThread();
-                            timer = new CountDownTimer(25000, 1000) {
+                            timer = new CountDownTimer(30000, 1000) {
                                 @Override
                                 public void onTick(long l) {
 
@@ -297,7 +294,6 @@ public class MainActivity extends FragmentActivity implements StartButtonClickLi
                                 public void onFinish() {
                                     closeMainFragment();
                                     showDialog();
-                                    thread.interrupt();
                                 }
                             }.start();
                             new Thread(new Runnable() {
@@ -485,7 +481,6 @@ public class MainActivity extends FragmentActivity implements StartButtonClickLi
             Log.d("Location", " Not found!");
             e.printStackTrace();
         }
-        Toast.makeText(this, cityName, Toast.LENGTH_SHORT).show();
         return cityName;
     }
 
@@ -505,6 +500,9 @@ public class MainActivity extends FragmentActivity implements StartButtonClickLi
     private void closeMainFragment() {
         FragmentManager fr = getSupportFragmentManager();
         fr.beginTransaction().detach(mainFragment).commit();
+        thread.interrupt();
+        if (timer != null)
+            timer.cancel();
     }
 
     private void getLocation() {
@@ -530,15 +528,22 @@ public class MainActivity extends FragmentActivity implements StartButtonClickLi
         }
     }
 
-    class myPhoneStateListener extends PhoneStateListener {
-        int signalStrength = 0;
-
-        @Override
-        public void onSignalStrengthsChanged(SignalStrength signalStrength) {
-            super.onSignalStrengthsChanged(signalStrength);
-            this.signalStrength = signalStrength.getGsmSignalStrength();
-            this.signalStrength = (2 * this.signalStrength) - 113;
-            Log.d("Signal", String.valueOf(this.signalStrength));
+    void requestPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
         }
     }
+
+//    class myPhoneStateListener extends PhoneStateListener {
+//        int signalStrength = 0;
+//
+//        @Override
+//        public void onSignalStrengthsChanged(SignalStrength signalStrength) {
+//            super.onSignalStrengthsChanged(signalStrength);
+//            this.signalStrength = signalStrength.getGsmSignalStrength();
+//            this.signalStrength = (2 * this.signalStrength) - 113;
+//            Log.d("Signal", String.valueOf(this.signalStrength));
+//        }
+//    }
 }
